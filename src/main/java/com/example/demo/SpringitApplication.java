@@ -25,28 +25,4 @@ public class SpringitApplication {
 		System.out.println("Welcome to springit!!!");
 	}
 
-
-//	@Bean
-//	CommandLineRunner commandLineRunner() {
-//		return args -> {
-//			System.out.println("Printing out all the bean names in the application context");
-//			System.out.println("----------------------------------------------------------");
-//			String [] beans = applicationContext.getBeanDefinitionNames();
-//			Arrays.sort(beans);
-//			Arrays.stream(beans).forEach(bean -> System.out.println(bean));
-//		};
-//	}
-
-	@Bean
-	CommandLineRunner commandLineRunner() {
-		return args -> {
-			log.error("Error");
-			log.info("Info");
-			log.debug("Debug");
-			log.trace("Trace");
-			log.warn("Warn");
-
-		};
-	}
-
 }
