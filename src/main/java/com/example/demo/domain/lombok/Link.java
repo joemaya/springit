@@ -7,11 +7,14 @@ import lombok.NonNull;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @Data
-public class Link {
+public class Link extends Auditable{
 
     public Link() {}
 
@@ -26,7 +29,7 @@ public class Link {
     private String title;
 
     // comments
-
-
+    @OneToMany(mappedBy = "link")
+    private List<Comment> comments = new ArrayList<>();
 
 }

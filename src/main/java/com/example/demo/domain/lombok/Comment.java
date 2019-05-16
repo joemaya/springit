@@ -2,16 +2,19 @@ package com.example.demo.domain.lombok;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
 @Data
-public class Comment {
+public class Comment extends Auditable {
 
     @Id
     @GeneratedValue
@@ -19,7 +22,20 @@ public class Comment {
     private String body;
 
     // tie to Link
+    @ManyToOne
+    private Link link;
 
+    @CreatedDate
+    private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime lastUpdatedDate;
+
+    @CreatedBy
+    private String createdBy;
+
+    @LastModifiedBy
+    private String modifiedBy;
 
 
 }
