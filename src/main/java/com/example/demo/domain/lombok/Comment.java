@@ -25,17 +25,4 @@ public class Comment extends Auditable {
     @ManyToOne
     private Link link;
 
-    @CreatedDate
-    private LocalDateTime createdDate;
-
-    @LastModifiedDate
-    private LocalDateTime lastUpdatedDate;
-
-    @CreatedBy
-    private String createdBy;
-
-    @LastModifiedBy
-    private String modifiedBy;
-
-
 }
