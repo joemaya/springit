@@ -1,7 +1,6 @@
 package com.example.demo.domain.lombok;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,16 +12,22 @@ import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@RequiredArgsConstructor
+@ToString
 public class Comment extends Auditable {
 
     @Id
     @GeneratedValue
     private Long id;
+
+    @NonNull
     private String body;
 
     // tie to Link
     @ManyToOne
+    @NonNull
     private Link link;
 
 }
