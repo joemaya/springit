@@ -11,17 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class HomeController {
 
-//    @GetMapping("/")
-//    @RequestMapping(path="/", method=RequestMethod.GET)
-    @RequestMapping(value="/", method=RequestMethod.GET, consumes="application/json", produces = "application/json")
-    public String home() {
-        return "Hello, Spring Boot 2!!!!";
-    }
-
-    @RequestMapping("/model")
-    public String model(Model model) {
-        model.addAttribute("message", "Hello world");
-        return "index";
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("title", "Hello, Thymeleaf");
+        return "home";
     }
 
 }
