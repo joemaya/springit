@@ -31,6 +31,11 @@ public class Link extends Auditable{
     @GeneratedValue
     private Long id;
 
+    public Link(String title, String url) {
+        this.title = title;
+        this.url = url;
+    }
+
     @NonNull
     @NotEmpty(message = "Please enter a url")
     @URL(message = "Please enter a valid url")

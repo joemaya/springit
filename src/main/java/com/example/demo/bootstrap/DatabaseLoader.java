@@ -36,7 +36,7 @@ public class DatabaseLoader implements CommandLineRunner {
     public void run(String... args) {
 
         // add users and roles
-//        addUserAndRoles();
+        addUserAndRoles();
         Map<String,String> links = new HashMap<>();
         links.put("Securing Spring Boot APIs and SPAs with OAuth 2.0","https://auth0.com/blog/securing-spring-boot-apis-and-spas-with-oauth2/?utm_source=reddit&utm_medium=sc&utm_campaign=springboot_spa_securing");
         links.put("Easy way to detect Device in Java Web Application using Spring Mobile - Source code to download from GitHub","https://www.opencodez.com/java/device-detection-using-spring-mobile.htm");
@@ -50,10 +50,10 @@ public class DatabaseLoader implements CommandLineRunner {
         links.put("Add Social Login to Your Spring Boot 2.0 app","https://developer.okta.com/blog/2018/07/24/social-spring-boot");
         links.put("File download example using Spring REST Controller","https://www.jeejava.com/file-download-example-using-spring-rest-controller/");
 
-//        links.forEach((k,v) -> {
-//            linkRepository.save(new Link(k,v));
-//            // we will do something with comments later
-//        });
+        links.forEach((title,url) -> {
+            linkRepository.save(new Link(title,url));
+            // we will do something with comments later
+        });
 
         long linkCount = linkRepository.count();
         System.out.println("Number of links in the database: " + linkCount );
