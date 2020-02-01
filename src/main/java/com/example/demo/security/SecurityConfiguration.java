@@ -4,6 +4,7 @@ import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointR
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -29,21 +30,33 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 //                    httpBasic();
 
 
-        http.
-                authorizeRequests().
-                antMatchers("/").permitAll().
-                antMatchers("/link/submit").hasRole("USER")
-                .antMatchers("/h2-console/**").permitAll()
-                .requestMatchers(EndpointRequest.to("info")).permitAll()
-                .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
-                .antMatchers("/actuator/").hasRole("ADMIN")
-                .and()
-                .formLogin()
-                .and()
-                .csrf().disable()
-                .headers().frameOptions().disable()
-                    ;
+        http
+            .authorizeRequests()
+            .requestMatchers(EndpointRequest.to("info")).permitAll()
+            .requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("ADMIN")
+            .antMatchers("/actuator/").hasRole("ADMIN")
+            .antMatchers("/").permitAll()
+            .antMatchers("/link/submit").hasRole("USER")
+            .antMatchers("/h2-console/**").permitAll()
+            .and()
+        .formLogin()
+            .loginPage("/login").permitAll()
+            .usernameParameter("email")
+            .and()
+        .logout()
+            .and()
+        .rememberMe()
+            .and()
+        .csrf().disable()
+            .headers().frameOptions().disable();
     }
+
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web
+//                .ignoring()
+//                .antMatchers("/h2-console/**");
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
