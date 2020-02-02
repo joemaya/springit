@@ -1,11 +1,14 @@
 package com.example.demo.controller;
 
+import com.example.demo.domain.lombok.Comment;
 import com.example.demo.domain.lombok.Link;
+import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.LinkRepository;
 
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +34,7 @@ public class LinkController {
     private static final Logger logger = LoggerFactory.getLogger(LinkController.class);
 ;
     private LinkRepository linkRepository;
+    private CommentRepository commentRepository;
 
     public LinkController(LinkRepository linkRepository) {
         this.linkRepository = linkRepository;
@@ -47,7 +51,11 @@ public class LinkController {
         model.addAttribute("link", linkRepository.getOne(id));
         Optional<Link> link = linkRepository.findById(id);
         if(link.isPresent()) {
-            model.addAttribute("link", link.get());
+            Link mainLink = link.get();
+            Comment comment = new Comment();
+            comment.setLink(mainLink);
+            model.addAttribute("comment", comment);
+            model.addAttribute("link", mainLink);
             model.addAttribute("success", model.containsAttribute("success"));
         }else {
             return "redirect:/";
@@ -82,4 +90,21 @@ public class LinkController {
         }
         return "redirect:/link/{id}";
     }
+
+    @Secured({"ROLE_USER"})
+    @PostMapping("/link/comments")
+    public String addComment(@Valid Comment comment, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            // handle the errores
+            logger.info("Errors found while adding the comment");
+
+        } else {
+            // save the comment
+            commentRepository.save(comment);
+            logger.info("new comment was saved successfully");
+        }
+        return "redirect:/link/" + comment.getLink().getId();
+    }
+
+
 }

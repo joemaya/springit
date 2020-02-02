@@ -1,5 +1,6 @@
 package com.example.demo.bootstrap;
 
+import com.example.demo.domain.lombok.Comment;
 import com.example.demo.domain.lombok.Link;
 import com.example.demo.domain.lombok.Role;
 import com.example.demo.domain.lombok.User;
@@ -51,8 +52,17 @@ public class DatabaseLoader implements CommandLineRunner {
         links.put("File download example using Spring REST Controller","https://www.jeejava.com/file-download-example-using-spring-rest-controller/");
 
         links.forEach((title,url) -> {
-            linkRepository.save(new Link(title,url));
+            Link link = new Link(title,url);
+            linkRepository.save(link);
             // we will do something with comments later
+            Comment spring = new Comment("Thank you for this link related to Spring Boot. I love it, great post!",link);
+            Comment security = new Comment("I love that you're talking about Spring Security",link);
+            Comment pwa = new Comment("What is this Progressive Web App thing all about? PWAs sound really cool.",link);
+            Comment comments[] = {spring,security,pwa};
+            for(Comment comment : comments) {
+                commentRepository.save(comment);
+                link.addComment(comment);
+            }
         });
 
         long linkCount = linkRepository.count();
