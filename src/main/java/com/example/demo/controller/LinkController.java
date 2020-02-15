@@ -6,6 +6,7 @@ import com.example.demo.repository.CommentRepository;
 import com.example.demo.repository.LinkRepository;
 
 
+import com.example.demo.service.LinkService;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.security.access.annotation.Secured;
@@ -31,25 +32,26 @@ public class LinkController {
 //        return "foo";
 //    }
 
-    private static final Logger logger = LoggerFactory.getLogger(LinkController.class);
-;
-    private LinkRepository linkRepository;
-    private CommentRepository commentRepository;
 
-    public LinkController(LinkRepository linkRepository) {
-        this.linkRepository = linkRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(LinkController.class);
+    private CommentRepository commentRepository;
+    private LinkService linkService;
+
+    public LinkController(LinkService linkService) {
+        this.linkService = linkService;
     }
 
     @GetMapping("/")
     public String list(Model model) {
-        model.addAttribute("links", linkRepository.findAll());
+        model.addAttribute("links", linkService.findAll());
         return "link/list";
     }
 
     @GetMapping("/link/{id}")
     public String read(@PathVariable Long id, Model model) {
-        model.addAttribute("link", linkRepository.getOne(id));
-        Optional<Link> link = linkRepository.findById(id);
+        model.addAttribute("link", linkService.findById(id));
+        Optional<Link> link = linkService.findById(id);
         if(link.isPresent()) {
             Link mainLink = link.get();
             Comment comment = new Comment();
@@ -80,7 +82,7 @@ public class LinkController {
             return "link/submit";
         } else {
             // save the link
-            linkRepository.save(link);
+            linkService.save(link);
             logger.info("new link was saved successfully");
 
             redirectAttributes
@@ -103,7 +105,9 @@ public class LinkController {
             commentRepository.save(comment);
             logger.info("new comment was saved successfully");
         }
-        return "redirect:/link/" + comment.getLink().getId();
+        return "redirect:/link/"
+//                + comment.getLink().getId()
+                ;
     }
 
 
